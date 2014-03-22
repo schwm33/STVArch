@@ -6,9 +6,25 @@ package ch.stv_arch.stv_arch;
 
 
 import ch.stv_arch.stv_arch.adapter.NavDrawerListAdapter;
+import ch.stv_arch.stv_arch.db.DatabaseHandler;
+import ch.stv_arch.stv_arch.db.Termin;
 import ch.stv_arch.stv_arch.model.NavDrawerItem;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -18,9 +34,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.app.ActionBar.LayoutParams;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.net.ParseException;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -28,7 +48,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
@@ -58,6 +81,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		StrictMode.enableDefaults(); //STRICT MODE ENABLED  
+		
 		//create and start Interstitial, and load data
 		loadData();
 
@@ -250,8 +275,8 @@ public class MainActivity extends Activity {
 		progress.setMessage("Daten werden geladen...");
 		progress.show();
 
+		getData();
 		createInterstitial();
-
 
 	}
 	private void createInterstitial() {
@@ -281,7 +306,78 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	private void loadDatabase() {
+private void getData() {
+		
+		ArrayList<Termin> termins = new ArrayList<Termin>();
+		
+		String result = "";
+		InputStream isr = null;
+		try{
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost("http://stv-arch.ch/android/get_ta.php"); //YOUR PHP SCRIPT ADDRESS 
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			isr = entity.getContent();
+		}
+		catch(Exception e){
+			Log.e("log_tag", "Error in http connection "+e.toString());
+		}
+		//convert response to string
+		try{
+			BufferedReader reader = new BufferedReader(new InputStreamReader(isr,"utf-8"),8);
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+			isr.close();
+
+			result=sb.toString();
+		}
+		catch(Exception e){
+			Log.e("log_tag", "Error  converting result "+e.toString());
+		}
+
+		//parse json data
+		try {
+	
+
+			JSONArray jArray = new JSONArray(result);
+
+			for(int i=0; i<jArray.length();i++){
+				JSONObject json = jArray.getJSONObject(i);
+				String stDate = json.getString("date");
+				String action = json.getString("what");
+				String where = json.getString("where");
+				
+				DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat outputFormat = new SimpleDateFormat("dd. MMM yyyy");
+				Date date = inputFormat.parse(stDate);
+				String outputDateStr = outputFormat.format(date);
+				
+				
+				termins.add(new Termin(outputDateStr,action,where));
+				}
+
+			DatabaseHandler db = new DatabaseHandler(this);
+			for(Termin termin : termins) {
+				Log.e("GUGUS",db.getDateCountVM() + "");
+				db.addEventVM(termin);
+			}
+			
+			
+			
+		}  catch (ParseException e) {  
+			Log.e("log_tag", "Error Parsing Data "+e.toString());
+
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			Log.e("log_tag", "Exception "+e.toString());
+
+		}
 
 	}
+
 }
+	
