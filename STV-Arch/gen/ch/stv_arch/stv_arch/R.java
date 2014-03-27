@@ -185,12 +185,16 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f040006;
         public static final int common_signin_btn_light_text_focused=0x7f040007;
         public static final int common_signin_btn_light_text_pressed=0x7f040005;
-        public static final int common_signin_btn_text_dark=0x7f040011;
-        public static final int common_signin_btn_text_light=0x7f040012;
+        public static final int common_signin_btn_text_dark=0x7f040013;
+        public static final int common_signin_btn_text_light=0x7f040014;
         public static final int content=0x7f040010;
+        public static final int content_text=0x7f040011;
         public static final int counter_text_bg=0x7f04000e;
         public static final int counter_text_color=0x7f04000f;
+        public static final int info_activity_bg=0x7f040012;
         public static final int list_background=0x7f04000b;
+        /**  old <color name="list_background_pressed">#992416</color> 
+         */
         public static final int list_background_pressed=0x7f04000c;
         public static final int list_divider=0x7f04000d;
         public static final int list_item_title=0x7f04000a;
@@ -233,55 +237,58 @@ containing a value of this type.
         public static final int common_signin_btn_text_pressed_light=0x7f020017;
         public static final int counter_bg=0x7f020018;
         public static final int ic_drawer=0x7f020019;
-        public static final int ic_launcher=0x7f02001a;
-        public static final int ic_logo=0x7f02001b;
-        public static final int ic_news=0x7f02001c;
-        public static final int ic_plusone_medium_off_client=0x7f02001d;
-        public static final int ic_plusone_small_off_client=0x7f02001e;
-        public static final int ic_plusone_standard_off_client=0x7f02001f;
-        public static final int ic_plusone_tall_off_client=0x7f020020;
-        public static final int list_item_bg_normal=0x7f020021;
-        public static final int list_item_bg_pressed=0x7f020022;
-        public static final int list_selector=0x7f020023;
+        public static final int ic_event=0x7f02001a;
+        public static final int ic_launcher=0x7f02001b;
+        public static final int ic_logo=0x7f02001c;
+        public static final int ic_news=0x7f02001d;
+        public static final int ic_plusone_medium_off_client=0x7f02001e;
+        public static final int ic_plusone_small_off_client=0x7f02001f;
+        public static final int ic_plusone_standard_off_client=0x7f020020;
+        public static final int ic_plusone_tall_off_client=0x7f020021;
+        public static final int ic_settings=0x7f020022;
+        public static final int ic_ta=0x7f020023;
+        public static final int ic_vm=0x7f020024;
+        public static final int list_item_bg_normal=0x7f020025;
+        public static final int list_item_bg_pressed=0x7f020026;
+        public static final int list_selector=0x7f020027;
     }
     public static final class id {
-        public static final int action_refresh=0x7f050010;
-        public static final int action_settings=0x7f050011;
-        public static final int counter=0x7f05000a;
-        public static final int drawer_layout=0x7f050005;
-        public static final int frame_container=0x7f050006;
+        public static final int action_info=0x7f05000f;
+        public static final int action_settings=0x7f050010;
+        public static final int counter=0x7f05000b;
+        public static final int drawer_layout=0x7f050006;
+        public static final int frame_container=0x7f050007;
         public static final int hybrid=0x7f050004;
-        public static final int icon=0x7f050008;
-        public static final int list_slidermenu=0x7f050007;
-        public static final int llTitle=0x7f05000b;
+        public static final int icon=0x7f050009;
+        public static final int list_slidermenu=0x7f050008;
+        public static final int llTitle=0x7f05000c;
         public static final int llView=0x7f05000e;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int progressBar1=0x7f05000f;
         public static final int satellite=0x7f050002;
         public static final int scrollView1=0x7f05000d;
         public static final int terrain=0x7f050003;
-        public static final int title=0x7f050009;
-        public static final int tvTitle=0x7f05000c;
+        public static final int title=0x7f05000a;
+        public static final int tvTitle=0x7f050005;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f070000;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int drawer_list_item=0x7f030001;
-        public static final int fragment_events=0x7f030002;
-        public static final int fragment_news=0x7f030003;
-        public static final int fragment_settings=0x7f030004;
-        public static final int fragment_ta=0x7f030005;
-        public static final int fragment_vm=0x7f030006;
-        public static final int load=0x7f030007;
+        public static final int activity_info=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int drawer_list_item=0x7f030002;
+        public static final int fragment_events=0x7f030003;
+        public static final int fragment_news=0x7f030004;
+        public static final int fragment_settings=0x7f030005;
+        public static final int fragment_ta=0x7f030006;
+        public static final int fragment_vm=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;
     }
     public static final class string {
-        public static final int action_refresh=0x7f06001c;
+        public static final int action_info=0x7f06001c;
         public static final int action_settings=0x7f06001b;
         public static final int app_name=0x7f06001a;
         /**   Title for notification shown when GooglePlayServices needs to be
@@ -378,13 +385,28 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
+        /**  Content Titles 
+         */
+        public static final int content_title_date=0x7f060026;
+        public static final int content_title_what=0x7f060028;
+        public static final int content_title_where=0x7f060027;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f06001d;
-        public static final int interstitial_not_ready=0x7f06001f;
-        /**  Intersitial 
+        public static final int desc_list_item_icon=0x7f06001e;
+        public static final int exception_http_message=0x7f060024;
+        public static final int exception_parse=0x7f060025;
+        /**  Exceptions 
          */
-        public static final int load_interstitial=0x7f06001e;
+        public static final int exception_title=0x7f060023;
+        /**  Links to php scripts 
+         */
+        public static final int link_ta_php=0x7f060021;
+        public static final int link_vm_php=0x7f060022;
+        public static final int progress_bar_message=0x7f060020;
+        /**  Progessbar 
+         */
+        public static final int progress_bar_title=0x7f06001f;
+        public static final int tab=0x7f06001d;
     }
     public static final class style {
         /** 

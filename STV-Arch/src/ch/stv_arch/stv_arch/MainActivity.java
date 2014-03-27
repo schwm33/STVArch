@@ -3,28 +3,18 @@ package ch.stv_arch.stv_arch;
 //ZUERTS ALLE DATEN IN LOKALE DATENBANK LADEN
 //UND WERBUNG LADEN
 //WHREND DIESER ZEIT INTENT MIT LADER:...
-
+/**
+ * A information application for STV Arch
+ * The app can show news, events, taetigkeitsprogramm, vereinsmeisterschaft and settings
+ * 
+ * @version 1.0
+ * @author Michael Schwab
+ * @date 27.03.2014
+ */
 
 import ch.stv_arch.stv_arch.adapter.NavDrawerListAdapter;
-import ch.stv_arch.stv_arch.db.DatabaseHandler;
-import ch.stv_arch.stv_arch.db.Termin;
 import ch.stv_arch.stv_arch.model.NavDrawerItem;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -34,13 +24,10 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-import android.app.ActionBar.LayoutParams;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.net.ParseException;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -48,10 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
@@ -79,11 +63,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main); 
 
-		StrictMode.enableDefaults(); //STRICT MODE ENABLED  
-		
-		//create and start Interstitial, and load data
+		//helper method
 		loadData();
 
 		mTitle = mDrawerTitle = getTitle();
@@ -104,13 +86,14 @@ public class MainActivity extends Activity {
 		// News
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
 		// Anlaesse
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
 		// VM
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		// TA, Will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(0, -1), true, "22"));
+		//navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(0, -1), true, "22"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 		// Einstellungen
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 
 
 		// Recycle the typed array
@@ -181,7 +164,11 @@ public class MainActivity extends Activity {
 		}
 		// Handle action bar actions click
 		switch (item.getItemId()) {
+		case R.id.action_info:
+			startActivity(new Intent(this, InfoActivity.class));
+			return true;
 		case R.id.action_settings:
+			displayView(4);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -220,8 +207,7 @@ public class MainActivity extends Activity {
 			break;
 		case 4:
 			fragment = new SettingsFragment();
-			break;
-
+			break;	
 		default:
 			break;
 		}
@@ -271,11 +257,10 @@ public class MainActivity extends Activity {
 
 	private void loadData() {
 		progress = new ProgressDialog(this);
-		progress.setTitle("Laden");
-		progress.setMessage("Daten werden geladen...");
+		progress.setTitle(R.string.progress_bar_title);
+		progress.setMessage(getResources().getString(R.string.progress_bar_message));
 		progress.show();
 
-		getData();
 		createInterstitial();
 
 	}
@@ -285,7 +270,11 @@ public class MainActivity extends Activity {
 		interstitial.setAdUnitId(AD_UNIT_ID);
 
 		// Create ad request.
-		AdRequest adRequest = new AdRequest.Builder().build();
+		AdRequest adRequest = new AdRequest.Builder()
+			.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+			.addTestDevice("htc-htc_one-SH353W900597")
+			.build();
+
 
 		// Begin loading your interstitial.
 		interstitial.loadAd(adRequest);
@@ -305,79 +294,4 @@ public class MainActivity extends Activity {
 			interstitial.show();
 		}
 	}
-	
-private void getData() {
-		
-		ArrayList<Termin> termins = new ArrayList<Termin>();
-		
-		String result = "";
-		InputStream isr = null;
-		try{
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost("http://stv-arch.ch/android/get_ta.php"); //YOUR PHP SCRIPT ADDRESS 
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			isr = entity.getContent();
-		}
-		catch(Exception e){
-			Log.e("log_tag", "Error in http connection "+e.toString());
-		}
-		//convert response to string
-		try{
-			BufferedReader reader = new BufferedReader(new InputStreamReader(isr,"utf-8"),8);
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			isr.close();
-
-			result=sb.toString();
-		}
-		catch(Exception e){
-			Log.e("log_tag", "Error  converting result "+e.toString());
-		}
-
-		//parse json data
-		try {
-	
-
-			JSONArray jArray = new JSONArray(result);
-
-			for(int i=0; i<jArray.length();i++){
-				JSONObject json = jArray.getJSONObject(i);
-				String stDate = json.getString("date");
-				String action = json.getString("what");
-				String where = json.getString("where");
-				
-				DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-				DateFormat outputFormat = new SimpleDateFormat("dd. MMM yyyy");
-				Date date = inputFormat.parse(stDate);
-				String outputDateStr = outputFormat.format(date);
-				
-				
-				termins.add(new Termin(outputDateStr,action,where));
-				}
-
-			DatabaseHandler db = new DatabaseHandler(this);
-			for(Termin termin : termins) {
-				Log.e("GUGUS",db.getDateCountVM() + "");
-				db.addEventVM(termin);
-			}
-			
-			
-			
-		}  catch (ParseException e) {  
-			Log.e("log_tag", "Error Parsing Data "+e.toString());
-
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			Log.e("log_tag", "Exception "+e.toString());
-
-		}
-
-	}
-
 }
-	

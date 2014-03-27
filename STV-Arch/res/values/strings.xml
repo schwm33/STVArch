@@ -3,14 +3,15 @@
 
     <string name="app_name">STV Arch</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="action_refresh">Aktualisieren</string>
+    <string name="action_info">Info</string>
+    <string name="tab">\u0009</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item>News</item>
         <item>Anlässe</item>
-        <item>VM</item>
-        <item>TA</item>
+        <item>Vereinsmeisterschaft</item>
+        <item>Tätigkeitsprogramm</item>
         <item>Einstellungen</item>
     </string-array>
 
@@ -18,13 +19,31 @@
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
         <item>@drawable/ic_news</item>
+        <item>@drawable/ic_event</item>
+        <item>@drawable/ic_vm</item>
+        <item>@drawable/ic_ta</item>
+        <item>@drawable/ic_settings</item>
     </array>
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
 
-    <!-- Intersitial -->
-    <string name="load_interstitial">Load Interstitial</string>
-    <string name="interstitial_not_ready">Interstitial Not Ready</string>
+    <!-- Progessbar -->
+    <string name="progress_bar_title">Laden...</string>
+    <string name="progress_bar_message">Daten werden geladen...</string>
+
+    <!-- Links to php scripts -->
+    <string name="link_ta_php">http://stv-arch.ch/android/get_ta.php</string>
+    <string name="link_vm_php">http://stv-arch.ch/android/get_vm.php</string>
+
+    <!-- Exceptions -->
+    <string name="exception_title">Error</string>
+    <string name="exception_http_message">Keine Internetverbindung! Internetverbindung überprüfen</string>
+    <string name="exception_parse">Error! Fehlerhafte Daten.</string>
+
+    <!-- Content Titles -->
+    <string name="content_title_date">Datum: </string>
+    <string name="content_title_where">Wo: </string>
+    <string name="content_title_what">Was: </string>
 
 </resources>

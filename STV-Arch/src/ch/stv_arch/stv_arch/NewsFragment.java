@@ -27,11 +27,6 @@ public class NewsFragment extends Fragment {
         String [] navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
         tvTitle.setText(navMenuTitles[0]);
         
-        FrameLayout f1 = new FrameLayout(getActivity());
-        TextView t1 = new TextView(getActivity());
-        t1.setText("Das ist ein Test");
-        f1.addView(t1);
-        
         
 		return rootView;
 	}
