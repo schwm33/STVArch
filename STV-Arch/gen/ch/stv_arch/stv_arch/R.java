@@ -208,6 +208,7 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f080000;
         public static final int activity_vertical_margin=0x7f080001;
+        public static final int title_content_size=0x7f080003;
         public static final int title_size=0x7f080002;
     }
     public static final class drawable {
@@ -280,9 +281,8 @@ containing a value of this type.
         public static final int drawer_list_item=0x7f030002;
         public static final int fragment_events=0x7f030003;
         public static final int fragment_news=0x7f030004;
-        public static final int fragment_settings=0x7f030005;
-        public static final int fragment_ta=0x7f030006;
-        public static final int fragment_vm=0x7f030007;
+        public static final int fragment_program=0x7f030005;
+        public static final int fragment_settings=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;
@@ -387,17 +387,18 @@ containing a value of this type.
         public static final int common_signin_button_text_long=0x7f060013;
         /**  Content Titles 
          */
-        public static final int content_title_date=0x7f060026;
-        public static final int content_title_what=0x7f060028;
-        public static final int content_title_where=0x7f060027;
+        public static final int content_title_date=0x7f060027;
+        public static final int content_title_what=0x7f060029;
+        public static final int content_title_where=0x7f060028;
         /**  Content Description 
          */
         public static final int desc_list_item_icon=0x7f06001e;
-        public static final int exception_http_message=0x7f060024;
-        public static final int exception_parse=0x7f060025;
+        public static final int exception_http_message=0x7f060025;
+        public static final int exception_parse=0x7f060026;
         /**  Exceptions 
          */
-        public static final int exception_title=0x7f060023;
+        public static final int exception_title=0x7f060024;
+        public static final int link_news_php=0x7f060023;
         /**  Links to php scripts 
          */
         public static final int link_ta_php=0x7f060021;

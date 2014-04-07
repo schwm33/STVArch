@@ -14,37 +14,54 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ch.stv_arch.stv_arch.Utils.Utils;
+import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.graphics.Typeface;
 import android.net.ParseException;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 /**
- * Define Fragment Vereinsmeisterschaft
+ * Define Fragment Taetigkeitsprogramm & Vereinsmeisterschaft
  */
 
-public class VMFragment extends Fragment {
+@SuppressLint("ValidFragment")
+public class ProgramFragment extends Fragment {
 
 	View rootView;
 	LinearLayout llScroll;
 
-	private static final int TEXTVIEW_MARGIN_SIDE = 20;
-	private static final int TEXTVIEW_MARGIN_TOP_BOTTOM = 10;
-	private static final int TEXTVIEW_PADDING = 20;
+	private static final int GRIDLAYOUT_MARGIN_SIDE = 20;
+	private static final int GRIDLAYOUT_MARGIN_TOP_BOTTOM = 10;
+	private static final int GRIDLAYOUT_PADDING = 20;
+	private static final int GRIDLAYOUT_COLUMNS = 2;
+	private static final int GRIDLAYOUT_ROWS = 3;
+	
+	private String link = "";
 
 	/**
-	 * Constructs an empty TAFragment
+	 * Constructs an TAFragment with the link
 	 */
-	public VMFragment() {
+	public ProgramFragment(String link) {
+		this.link = link;
+	}
+	
+	/**
+	 * Constructs an empty ProgrammFragment
+	 */
+	public ProgramFragment() {
 	}
 
 	/**
@@ -59,14 +76,7 @@ public class VMFragment extends Fragment {
 
 		StrictMode.enableDefaults(); //STRICT MODE ENABLED  
 
-		rootView = inflater.inflate(R.layout.fragment_ta, container, false);
-
-		//Title
-		TextView tvTitle =  ((TextView) rootView.findViewById(R.id.tvTitle));  
-		tvTitle.setTextSize(getResources().getDimension(R.dimen.title_size));
-		Utils.TypeFace(tvTitle, getActivity().getAssets());
-		String [] navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-		tvTitle.setText(navMenuTitles[2]);
+		rootView = inflater.inflate(R.layout.fragment_program, container, false);
 
 		//helper method
 		getData();
@@ -89,7 +99,7 @@ public class VMFragment extends Fragment {
 		InputStream isr = null;
 		try{
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(getResources().getString(R.string.link_vm_php)); //YOUR PHP SCRIPT ADDRESS 
+			HttpPost httppost = new HttpPost(link); //YOUR PHP SCRIPT ADDRESS 
 			HttpResponse response = httpclient.execute(httppost);
 			HttpEntity entity = response.getEntity();
 			isr = entity.getContent();
@@ -123,13 +133,12 @@ public class VMFragment extends Fragment {
 
 			JSONArray jArray = new JSONArray(result);
 
-			//Define a textview array
-			TextView[] tx = new TextView[jArray.length()];	   
-
-			//define the margin of the textview
-			TableRow.LayoutParams params = new TableRow.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			params.setMargins(TEXTVIEW_MARGIN_SIDE,TEXTVIEW_MARGIN_TOP_BOTTOM,TEXTVIEW_MARGIN_SIDE,TEXTVIEW_MARGIN_TOP_BOTTOM);
-
+			//Define a gridlayout array (contains textviews)
+			GridLayout[] gl = new GridLayout[jArray.length()];	   
+			
+			//define a textview array
+			TextView[] tv = new TextView[GRIDLAYOUT_ROWS * GRIDLAYOUT_COLUMNS];
+			
 			//Content titles with tabulators
 			String content_title_date = getResources().getString(R.string.content_title_date) + getString(R.string.tab) + getString(R.string.tab);
 			String content_title_what = getResources().getString(R.string.content_title_what)+ getString(R.string.tab)+ getString(R.string.tab)+ getString(R.string.tab) + getString(R.string.tab);
@@ -147,22 +156,26 @@ public class VMFragment extends Fragment {
 				Date date = inputFormat.parse(stDate);
 				String outputDateStr = outputFormat.format(date);
 
+				//Create gridlayout
+				gl[i] = createGridLayout();
+				
+				//create textviews
+		        tv[0] = createTextView(content_title_date, true);
+				tv[1] = createTextView(outputDateStr, false);
+				tv[2] = createTextView(content_title_what, true);
+				tv[3] = createTextView(action, false);
+				tv[4] = createTextView(content_title_where, true);
+				tv[5] = createTextView(where, false);
 
-				String s =  content_title_date + outputDateStr + "\n" 
-						+ content_title_what + action + "\n"
-						+ content_title_where + where;
-
-
-				//Create textview
-				tx[i] = new TextView(getActivity());
-				tx[i].setText(s);
-				tx[i].setTextColor(getResources().getColor(R.color.content_text));
-				tx[i].setLayoutParams(params);
-				tx[i].setPadding(TEXTVIEW_PADDING,TEXTVIEW_PADDING,TEXTVIEW_PADDING,TEXTVIEW_PADDING);
-				tx[i].setBackgroundResource(R.color.content);
-
+				gl[i].addView(tv[0]);
+				gl[i].addView(tv[1]);
+				gl[i].addView(tv[2]);
+				gl[i].addView(tv[3]);
+				gl[i].addView(tv[4]);
+				gl[i].addView(tv[5]);
+				
 				//add textview to the scrollview
-				llScroll.addView(tx[i]);
+				llScroll.addView(gl[i]);
 			}
 			//dismiss the progressbar
 			progress.dismiss();
@@ -189,5 +202,42 @@ public class VMFragment extends Fragment {
 			//dismiss the progressbar
 			progress.dismiss();
 		}
+	}
+	
+	/**
+	 * Create a textview
+	 * @param text a string with the text of the textview
+	 * @param bold boolean if true text is bold
+	 * @return tv a textview formatted
+	 */
+	public TextView createTextView(String text, boolean bold) {
+		TextView tv = new TextView(getActivity());
+		tv.setTextColor(getResources().getColor(R.color.content_text));
+		SpannableString spanString = new SpannableString(text);
+		//spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
+		if(bold==true) spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+		//spanString.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanString.length(), 0);
+		tv.setText(spanString);
+		
+		return tv;
+	}
+	
+	/**
+	 * Create a gridlayout
+	 * @return gl a gridlayout formatted
+	 */
+	public GridLayout createGridLayout() {
+		GridLayout gl = new GridLayout(getActivity());
+		//define the margin of the GridLayout
+		TableRow.LayoutParams params = new TableRow.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		params.setMargins(GRIDLAYOUT_MARGIN_SIDE,GRIDLAYOUT_MARGIN_TOP_BOTTOM,GRIDLAYOUT_MARGIN_SIDE,GRIDLAYOUT_MARGIN_TOP_BOTTOM);
+		gl.setLayoutParams(params);
+		gl.setPadding(GRIDLAYOUT_PADDING,GRIDLAYOUT_PADDING,GRIDLAYOUT_PADDING,GRIDLAYOUT_PADDING);
+		gl.setBackgroundResource(R.color.content);
+		gl.setOrientation(0);
+		gl.setColumnCount(GRIDLAYOUT_COLUMNS);
+		gl.setRowCount(GRIDLAYOUT_ROWS);
+		
+		return gl;
 	}
 }

@@ -35,6 +35,7 @@
     <!-- Links to php scripts -->
     <string name="link_ta_php">http://stv-arch.ch/android/get_ta.php</string>
     <string name="link_vm_php">http://stv-arch.ch/android/get_vm.php</string>
+    <string name="link_news_php">http://stv-arch.ch/android/get_news.php</string>
 
     <!-- Exceptions -->
     <string name="exception_title">Error</string>

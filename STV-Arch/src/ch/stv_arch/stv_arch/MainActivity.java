@@ -200,10 +200,10 @@ public class MainActivity extends Activity {
 			fragment = new EventsFragment();
 			break;
 		case 2:
-			fragment = new VMFragment();
+			fragment = new ProgramFragment(getResources().getString(R.string.link_vm_php));
 			break;
 		case 3:
-			fragment = new TAFragment();
+			fragment = new ProgramFragment(getResources().getString(R.string.link_ta_php));
 			break;
 		case 4:
 			fragment = new SettingsFragment();
