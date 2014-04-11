@@ -288,9 +288,9 @@ containing a value of this type.
         public static final int main=0x7f0b0000;
     }
     public static final class string {
-        public static final int action_info=0x7f06001c;
-        public static final int action_settings=0x7f06001b;
-        public static final int app_name=0x7f06001a;
+        public static final int action_info=0x7f06001d;
+        public static final int action_settings=0x7f06001c;
+        public static final int app_name=0x7f06001b;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
          */
@@ -387,27 +387,30 @@ containing a value of this type.
         public static final int common_signin_button_text_long=0x7f060013;
         /**  Content Titles 
          */
-        public static final int content_title_date=0x7f060027;
-        public static final int content_title_what=0x7f060029;
-        public static final int content_title_where=0x7f060028;
+        public static final int content_title_date=0x7f060028;
+        public static final int content_title_what=0x7f06002a;
+        public static final int content_title_where=0x7f060029;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f06001e;
-        public static final int exception_http_message=0x7f060025;
-        public static final int exception_parse=0x7f060026;
+        public static final int desc_list_item_icon=0x7f06001f;
+        public static final int exception_http_message=0x7f060026;
+        public static final int exception_parse=0x7f060027;
         /**  Exceptions 
          */
-        public static final int exception_title=0x7f060024;
-        public static final int link_news_php=0x7f060023;
+        public static final int exception_title=0x7f060025;
+        public static final int link_news_php=0x7f060024;
         /**  Links to php scripts 
          */
-        public static final int link_ta_php=0x7f060021;
-        public static final int link_vm_php=0x7f060022;
-        public static final int progress_bar_message=0x7f060020;
+        public static final int link_ta_php=0x7f060022;
+        public static final int link_vm_php=0x7f060023;
+        /**  Location client code resources (prefix with location_client) 
+         */
+        public static final int location_client_powered_by_google=0x7f06001a;
+        public static final int progress_bar_message=0x7f060021;
         /**  Progessbar 
          */
-        public static final int progress_bar_title=0x7f06001f;
-        public static final int tab=0x7f06001d;
+        public static final int progress_bar_title=0x7f060020;
+        public static final int tab=0x7f06001e;
     }
     public static final class style {
         /** 
